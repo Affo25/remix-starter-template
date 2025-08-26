@@ -115,6 +115,33 @@ export default function Install() {
           </button>
         </form>
 
+        {/* Quick install for omarketdev store */}
+        <div style={{ 
+          marginTop: "1.5rem", 
+          padding: "1rem", 
+          backgroundColor: "#f0f9ff", 
+          border: "1px solid #bae6fd", 
+          borderRadius: "4px" 
+        }}>
+          <p style={{ color: "#0c4a6e", fontWeight: "bold", marginBottom: "0.5rem" }}>
+            Quick Install for omarketdev Store
+          </p>
+          <button
+            onClick={() => window.open('https://omarketdev.myshopify.com/admin/oauth/install_custom_app?client_id=f1d6d0c56d32070c0a12de72a09d2294', '_blank')}
+            style={{
+              backgroundColor: "#0369a1",
+              color: "white",
+              padding: "0.5rem 1rem",
+              border: "none",
+              borderRadius: "4px",
+              fontSize: "0.875rem",
+              cursor: "pointer"
+            }}
+          >
+            Install on omarketdev Store
+          </button>
+        </div>
+
         <div style={{ marginTop: "2rem", fontSize: "0.875rem", color: "#6d7175" }}>
           <p>Don't have a Shopify store?</p>
           <a 
