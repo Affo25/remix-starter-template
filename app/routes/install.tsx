@@ -5,11 +5,13 @@ import { redirect } from "@remix-run/cloudflare";
 interface LoaderData {
   shop?: string;
   appUrl: string;
+  error?: string;
 }
 
 export const loader: LoaderFunction = async ({ request, context }) => {
   const url = new URL(request.url);
   const shop = url.searchParams.get("shop");
+  const error = url.searchParams.get("error");
   
   // If shop is provided, redirect to OAuth
   if (shop) {
@@ -19,7 +21,7 @@ export const loader: LoaderFunction = async ({ request, context }) => {
   const env = context.cloudflare.env as any;
   const appUrl = env.SHOPIFY_APP_URL || url.origin;
   
-  return { shop, appUrl };
+  return { shop, appUrl, error };
 };
 
 export const meta: MetaFunction = () => {
@@ -30,7 +32,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Install() {
-  const { appUrl } = useLoaderData<LoaderData>();
+  const { appUrl, error } = useLoaderData<LoaderData>();
 
   return (
     <div style={{
@@ -56,22 +58,45 @@ export default function Install() {
         <p style={{ color: "#6d7175", marginBottom: "2rem" }}>
           Enhance your Shopify store with engaging video reels
         </p>
+
+        {error && (
+          <div style={{
+            backgroundColor: "#fef2f2",
+            border: "1px solid #fecaca",
+            color: "#dc2626",
+            padding: "0.75rem",
+            borderRadius: "4px",
+            marginBottom: "1rem",
+            fontSize: "0.875rem"
+          }}>
+            {error}
+          </div>
+        )}
         
         <form method="GET" action="/auth/shopify">
           <div style={{ marginBottom: "1rem" }}>
             <input
               type="text"
               name="shop"
-              placeholder="your-store.myshopify.com"
+              placeholder="Enter your store name (e.g., my-store or my-store.myshopify.com)"
               required
               style={{
                 width: "100%",
                 padding: "0.75rem",
-                border: "1px solid #d1d5db",
+                border: error ? "1px solid #dc2626" : "1px solid #d1d5db",
                 borderRadius: "4px",
                 fontSize: "1rem"
               }}
             />
+            <small style={{ 
+              color: "#6d7175", 
+              fontSize: "0.75rem",
+              marginTop: "0.25rem",
+              display: "block",
+              textAlign: "left"
+            }}>
+              You can enter just your store name or the full domain
+            </small>
           </div>
           <button
             type="submit"

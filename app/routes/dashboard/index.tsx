@@ -34,9 +34,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   
   // If no shop parameter, redirect to installation flow
   if (!shop) {
-    // For testing, you can provide a shop parameter
-    // In production, this would redirect to your app installation page
-    return redirect("/?shop=your-development-store.myshopify.com");
+    return redirect("/install");
   }
   
   return { shop, host: null, isEmbedded: false };

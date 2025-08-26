@@ -1,12 +1,20 @@
 import type { LoaderFunction } from "@remix-run/cloudflare";
 import { redirect } from "@remix-run/cloudflare";
-import { getShopifyAuthUrl, generateNonce } from "../utils/shopify-oauth";
+import { getShopifyAuthUrl, generateNonce, normalizeShopDomain } from "../utils/shopify-oauth";
 
 export const loader: LoaderFunction = async ({ request, context }) => {
   const url = new URL(request.url);
-  const shop = url.searchParams.get("shop");
-  if (!shop) {
+  const shopParam = url.searchParams.get("shop");
+  if (!shopParam) {
     return new Response("Missing shop parameter", { status: 400 });
+  }
+  
+  let shop: string;
+  try {
+    shop = normalizeShopDomain(shopParam);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return new Response(`Invalid shop domain: ${errorMessage}`, { status: 400 });
   }
   
   const state = generateNonce();

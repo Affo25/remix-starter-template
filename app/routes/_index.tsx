@@ -1,15 +1,22 @@
 
 import type { LoaderFunction, MetaFunction } from "@remix-run/cloudflare";
 import { redirect } from "@remix-run/cloudflare";
+import { normalizeShopDomain } from "../utils/shopify-oauth";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
-  const shop = url.searchParams.get("shop");
-  if (shop) {
-    return redirect(`/auth/shopify?shop=${shop}`);
+  const shopParam = url.searchParams.get("shop");
+  if (shopParam) {
+    try {
+      const shop = normalizeShopDomain(shopParam);
+      return redirect(`/auth/shopify?shop=${encodeURIComponent(shop)}`);
+    } catch (error) {
+      // If shop domain is invalid, redirect to install page with error
+      return redirect(`/install?error=${encodeURIComponent("Invalid shop domain format")}`);
+    }
   }
-  // Always redirect to dashboard for embedded app
-  return redirect("/dashboard");
+  // If no shop parameter, redirect to install page
+  return redirect("/install");
 };
 
 export const meta: MetaFunction = () => {

@@ -2,7 +2,7 @@
 
 client_id = "f1d6d0c56d32070c0a12de72a09d2294"
 name = "video-reels-app"
-handle = "video-reels-app"
+handle = "video-reels-app-omarketdev"
 application_url = "https://remix-starter-template.t4taurus.workers.dev/"
 embedded = true
 
@@ -27,7 +27,10 @@ api_version = "2025-07"
 scopes = "read_products,write_products"
 
 [auth]
-redirect_urls = ["https://remix-starter-template.t4taurus.workers.dev/auth/callback"]
+redirect_urls = [
+  "https://remix-starter-template.t4taurus.workers.dev/auth/callback",
+  "http://localhost:5173/auth/callback"
+]
 
 [pos]
 embedded = false
