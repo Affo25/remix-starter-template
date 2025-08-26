@@ -24,12 +24,10 @@ api_version = "2025-07"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products"
+scopes = "read_products,write_products"
 
 [auth]
-redirect_urls = ["https://remix-starter-template.t4taurus.workers.dev//auth/callback",
- "https://remix-starter-template.t4taurus.workers.dev//auth/shopify/callback",
-  "https://remix-starter-template.t4taurus.workers.dev//api/auth/callback"]
+redirect_urls = ["https://remix-starter-template.t4taurus.workers.dev/auth/callback"]
 
 [pos]
 embedded = false
