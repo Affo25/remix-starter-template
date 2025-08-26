@@ -127,7 +127,7 @@ export default function Install() {
             Quick Install for omarketdev Store
           </p>
           <button
-            onClick={() => window.open('https://omarketdev.myshopify.com/admin/oauth/install_custom_app?client_id=f1d6d0c56d32070c0a12de72a09d2294', '_blank')}
+            onClick={() => window.open('https://omarketdev.myshopify.com/admin/oauth/install_custom_app?client_id=530c19613359ffe4a76c4dc0324838ee', '_blank')}
             style={{
               backgroundColor: "#0369a1",
               color: "white",
