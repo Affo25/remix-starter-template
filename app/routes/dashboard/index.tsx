@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import type { LoaderFunction } from "@remix-run/cloudflare";
+import { useLoaderData } from "@remix-run/react";
+import { redirect } from "@remix-run/cloudflare";
 import {
   Page,
   Card,
@@ -11,7 +14,36 @@ import {
   Button
 } from '@shopify/polaris';
 
+interface LoaderData {
+  shop: string;
+  host: string | null;
+  isEmbedded: boolean;
+}
+
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  
+  // Check if we're being loaded within Shopify admin iframe
+  const shop = url.searchParams.get("shop");
+  const host = url.searchParams.get("host");
+  
+  // If we have shop and host parameters, we're being loaded from Shopify
+  if (shop && host) {
+    return { shop, host, isEmbedded: true };
+  }
+  
+  // If no shop parameter, redirect to installation flow
+  if (!shop) {
+    // For testing, you can provide a shop parameter
+    // In production, this would redirect to your app installation page
+    return redirect("/?shop=your-development-store.myshopify.com");
+  }
+  
+  return { shop, host: null, isEmbedded: false };
+};
+
 export default function Dashboard() {
+  const { shop, host, isEmbedded } = useLoaderData<LoaderData>();
   const [title, setTitle] = useState('');
   const [videoNumber, setVideoNumber] = useState('1');
 
@@ -32,12 +64,14 @@ export default function Dashboard() {
   ];
 
   return (
-    <Page title="Dashboard">
+    <Page title="Video Reels Dashboard">
       <Layout>
         <Layout.Section>
           <Card>
             <TextContainer>
-              <h2>Upload or Select a Video</h2>
+              <h2>Welcome to Video Reels App</h2>
+              <p>Connected to: <strong>{shop}</strong></p>
+              <p>{isEmbedded ? "Running in Shopify Admin" : "Standalone Mode"}</p>
               <p>Use the form below to add a video to your Shopify app dashboard.</p>
             </TextContainer>
             <Form onSubmit={handleSubmit}>

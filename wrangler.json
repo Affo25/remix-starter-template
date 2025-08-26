@@ -9,6 +9,8 @@
     "enabled": true
   },
   "upload_source_maps": true,
-
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "SHOPIFY_APP_URL": "https://remix-starter-template.t4taurus.workers.dev"
+  }
 }
